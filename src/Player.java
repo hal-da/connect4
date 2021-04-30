@@ -2,18 +2,11 @@ import java.util.Scanner;
 
 public class Player {
 
-    private final String name;
     private final Color color;
     private final Scanner sc = new Scanner(System.in);
 
-
-    public Player(String name, Color color) {
-        this.name = name;
+    public Player(Color color) {
         this.color = color;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Color getColor() {
@@ -36,7 +29,6 @@ public class Player {
                 System.err.println("Must choose a number between 1 and 7");
             }
         }
-
         return move;
     }
 }

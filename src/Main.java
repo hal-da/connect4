@@ -3,10 +3,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        Player playerX = new Player("X", Color.X);
-        Player playerO = new Player("O", Color.O);
+        Player playerX = new Player(Color.X);
+        Player playerO = new Player(Color.O);
         Game game = new Game();
-
         boolean gameIsPlayIng = true;
 
         printGreeting();
@@ -36,6 +35,7 @@ public class Main {
 
     static void playARound(Game game, Player player){
         boolean moveSuccessful = false;
+
         while (!moveSuccessful){
             game.printPieces();
             moveSuccessful = game.putPieceInSlotAtCol(player.getMove(),player.getColor());
@@ -60,9 +60,11 @@ public class Main {
                 System.out.println("wanna go again? y/n:");
                 again = sc.nextLine().charAt(0);
             } catch (Exception e){
-                //do nothing;
+                System.err.println("only y or n please.");
             }
         }
+
+        sc.close();
         return again == 'y';
     }
 }

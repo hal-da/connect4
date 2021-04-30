@@ -37,13 +37,10 @@ public class Game {
 
 
     public boolean checkIfMoveWins(){
-
         return fourInAColumn() || fourInARow() || fourDiagonal();
-
     }
 
     public boolean putPieceInSlotAtCol(int col, Color color){
-
         col--;
 
         try {
@@ -80,25 +77,6 @@ public class Game {
         return false;
     }
 
-    // eigentlich sinnlos
-
-    public boolean fourInAColumn(int col){
-        col--;
-        int sameInCol = 0;
-
-        for (int row = 0; row < NUMBER_ROWS-1; row++) {
-            if(board[row][col].getCaption() != Color.Empty.getCaption() && board[row][col].getCaption() == board[row+1][col].getCaption()) sameInCol++;
-            else sameInCol = 0;
-
-            if(sameInCol == 3){
-                System.out.println(board[row][col].getCaption() + " has won by 4 in a column in column " + (col+1));
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public boolean fourInAColumn(){
         int sameInCol = 0;
 
@@ -114,13 +92,13 @@ public class Game {
                     return true;
                 }
             }
-
         }
-
         return false;
     }
 
     public boolean fourDiagonal(){
+
+        // diagonal increasing
 
         int equalPieces = 0;
         for (int i = 3; i <= 5; i++) {
@@ -137,7 +115,7 @@ public class Game {
             } equalPieces = 0;
         }
 
-        //----------------------------------
+        // diagonal decreasing
 
         equalPieces = 0;
         for (int i = 0; i <= 2; i++) {
