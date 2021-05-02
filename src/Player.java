@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class Player {
 
     private final Color color;
-    private final Scanner sc = new Scanner(System.in);
 
     public Player(Color color) {
         this.color = color;
@@ -17,12 +16,13 @@ public class Player {
         return color.getCaption();
     }
 
-    public int getMove(){
+    public int getMove(Scanner sc){
+
         int move = -1;
 
         while (move < 1 || move > 7){
             try {
-                System.out.print("Player " + getCaption() + " choose a column from 1 to 7: ");
+                System.out.print("Player " + getCaption() + ", choose a column from 1 to 7: ");
                 move = sc.nextInt();
             } catch (Exception e){
                 sc.next();

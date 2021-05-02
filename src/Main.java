@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+        Scanner sc = new Scanner(System.in);
         Player playerX = new Player(Color.X);
         Player playerO = new Player(Color.O);
         Game game = new Game();
@@ -12,33 +13,34 @@ public class Main {
 
         while (gameIsPlayIng){
 
-            playARound(game,playerX);
+            playARound(game,playerX, sc);
             gameIsPlayIng = !game.checkIfMoveWins();
             if(gameIsPlayIng) {
-                playARound(game, playerO);
+                playARound(game, playerO, sc);
                 gameIsPlayIng = !game.checkIfMoveWins();
             }
 
             if(!gameIsPlayIng){
                 game.printPieces();
                 game.checkIfMoveWins();
-                gameIsPlayIng = wannaGoAgain();
+                gameIsPlayIng = wannaGoAgain(sc);
                 game.setUpNewGame();
             }
             if(!game.hasEmptyPieces()){
                 System.out.println("It's a draw!");
-                gameIsPlayIng = wannaGoAgain();
+                gameIsPlayIng = wannaGoAgain(sc);
                 game.setUpNewGame();
             }
         }
+        sc.close();
     }
 
-    static void playARound(Game game, Player player){
+    static void playARound(Game game, Player player, Scanner sc){
         boolean moveSuccessful = false;
 
         while (!moveSuccessful){
             game.printPieces();
-            moveSuccessful = game.putPieceInSlotAtCol(player.getMove(),player.getColor());
+            moveSuccessful = game.putPieceInSlotAtCol(player.getMove(sc),player.getColor());
         }
     }
 
@@ -49,22 +51,25 @@ public class Main {
         System.out.println("********** Player1: X *********");
         System.out.println("********** Player2: O *********");
         System.out.println("*******************************");
+        System.out.println();
     }
 
-    static boolean wannaGoAgain(){
-        Scanner sc = new Scanner(System.in);
+    static void printByeBye(){
+        System.out.println("thank you for playing, see you soon");
+    }
+
+    static boolean wannaGoAgain(Scanner sc){
         char again = '#';
 
         while (!(again == 'y' || again == 'n')){
             try{
+                sc.nextLine();
                 System.out.println("wanna go again? y/n:");
                 again = sc.nextLine().charAt(0);
             } catch (Exception e){
                 System.err.println("only y or n please.");
             }
         }
-
-        sc.close();
         return again == 'y';
     }
 }
