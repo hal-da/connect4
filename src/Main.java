@@ -21,8 +21,6 @@ public class Main {
             }
 
             if(!gameIsPlayIng){
-                game.printPieces();
-                game.checkIfMoveWins();
                 gameIsPlayIng = wannaGoAgain(sc);
                 game.setUpNewGame();
             }
@@ -33,6 +31,7 @@ public class Main {
             }
         }
         sc.close();
+        printByeBye();
     }
 
     static void playARound(Game game, Player player, Scanner sc){

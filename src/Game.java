@@ -1,11 +1,11 @@
-import java.util.Arrays;
-
 public class Game {
 
     static final int NUMBER_ROWS = 6;
     static final int NUMBER_COLS = 7;
+    static final String FONT_COLOR_RED = "\u001B[31m";
+    static final String FONT_COLOR_RESET = "\u001B[0m";
 
-    private Piece[][] board = new Piece[NUMBER_ROWS][NUMBER_COLS];
+    private final Piece[][] board = new Piece[NUMBER_ROWS][NUMBER_COLS];
 
     public Game() {
         setUpNewGame();
@@ -33,8 +33,6 @@ public class Game {
         }
         System.out.println("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
     }
-
-
 
     public boolean checkIfMoveWins(){
         return fourInAColumn() || fourInARow() || fourDiagonal();
@@ -64,15 +62,22 @@ public class Game {
     public boolean fourInARow(){
         int sameInARow = 0;
 
-        for(Piece[] rows: board){
-            for (int i = 0; i < NUMBER_COLS-1; i++) {
-                if(rows[i].getCaption() != Color.Empty.getCaption() && rows[i].getCaption() == rows[i+1].getCaption()) sameInARow++;
-                else sameInARow = 0;
-                if (sameInARow == 3){
-                    System.out.println(rows[i].getCaption() + " has won by 4 in a row: " + Arrays.toString(rows));
-                    return true;
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[i].length-1; j++) {
+                    if(board[i][j].getCaption() != Color.Empty.getCaption() && board[i][j].getCaption() == board[i][j+1].getCaption()) sameInARow++;
+                    else sameInARow = 0;
+                    if (sameInARow == 3){
+                        int[][] fourConnected = {
+                                {i, j-2},
+                                {i, j-1},
+                                {i, j},
+                                {i, j+1},
+                        };
+                        printWonGame(fourConnected);
+                        System.out.println(board[i][j].getCaption() + " has won by 4 in a row: " + i);
+                        return true;
                 }
-            }
+            } sameInARow = 0;
         }
         return false;
     }
@@ -88,19 +93,27 @@ public class Game {
                 else sameInCol = 0;
 
                 if(sameInCol == 3){
+                    int[][] fourConnected = {
+                            {row - 2, col},
+                            {row - 1, col},
+                            {row, col},
+                            {row + 1, col},
+                    };
+
+                    printWonGame(fourConnected);
                     System.out.println(board[row][col].getCaption() + " has won by 4 in a column in column " + (col+1));
                     return true;
                 }
-            }
+            } sameInCol = 0;
         }
         return false;
     }
 
     public boolean fourDiagonal(){
+        int equalPieces = 0;
 
         // diagonal increasing
 
-        int equalPieces = 0;
         for (int i = 3; i <= 5; i++) {
             for (int j = 0; j <= 3; j++) {
                 for (int offset = 0; offset < 3; offset++) {
@@ -108,6 +121,13 @@ public class Game {
                     else equalPieces = 0;
 
                     if (equalPieces == 3){
+                        int[][] fourConnected = {
+                                {i, j},
+                                {i-1, j+1},
+                                {i-2, j+2},
+                                {i-3, j+3},
+                        };
+                        printWonGame(fourConnected);
                         System.out.println(board[j][i].getCaption() + " has won by 4 in diagonal increasing in col " + (j+1) + " to col " + (j + 4));
                         return true;
                     }
@@ -125,6 +145,13 @@ public class Game {
                     else equalPieces = 0;
 
                     if (equalPieces == 3){
+                        int[][] fourConnected = {
+                                {i, j},
+                                {i+1, j+1},
+                                {i+2, j+2},
+                                {i+3, j+3},
+                        };
+                        printWonGame(fourConnected);
                         System.out.println(board[i][j].getCaption() + " has won by 4 in diagonal decreasing in col " + (j+1) + " to col " + (j + 4));
                         return true;
                     }
@@ -141,5 +168,23 @@ public class Game {
             }
         }
         return false;
+    }
+
+    public void printWonGame(int[][] fourConnected){
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if(
+                        i== fourConnected[0][0] && j == fourConnected[0][1] ||
+                        i== fourConnected[1][0] && j == fourConnected[1][1] ||
+                        i== fourConnected[2][0] && j == fourConnected[2][1] ||
+                        i== fourConnected[3][0] && j == fourConnected[3][1]
+                ) {
+                    System.out.print("| " + FONT_COLOR_RED + board[i][j].getCaption() + " " + FONT_COLOR_RESET);
+                } else System.out.printf("| %s ", board[i][j].getCaption() );
+            }
+            System.out.println("|");
+        }
+        System.out.println("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
     }
 }
